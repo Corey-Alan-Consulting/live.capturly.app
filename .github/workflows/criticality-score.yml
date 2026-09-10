@@ -31,9 +31,11 @@ jobs:
         run: |
           criticality_score -depsdev-disable -format json "https://github.com/${{ github.repository }}" | tee criticality-score.json
 
-          echo "## OpenSSF Criticality Score" >> "$GITHUB_STEP_SUMMARY"
-          echo '```json' >> "$GITHUB_STEP_SUMMARY"
-          cat criticality-score.json >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## OpenSSF Criticality Score"
+            echo '```json'
+            cat criticality-score.json
+          } >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Criticality Score result

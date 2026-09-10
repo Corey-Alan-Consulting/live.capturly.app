@@ -13,7 +13,9 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      # Credentials deliberately persist: git-auto-commit-action pushes the
+      # regenerated TOC back to the wiki with this checkout's auth.
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7 # zizmor: ignore[artipacked]
         with:
           repository: ${{github.repository}}.wiki
       - name: Run github-markdown-toc
