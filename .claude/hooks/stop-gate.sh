@@ -49,8 +49,12 @@ if has_script test; then
   # node --test or mocha script would choke on it.
   flag=""
   node -e 'process.exit(/jest|vitest|turbo/.test(require("./package.json").scripts.test) ? 0 : 1)' && flag="--passWithNoTests"
-  if [ "$pm" = yarn ]; then yarn test ${flag:+"$flag"} >"${state}.test.log" 2>&1 || fails="${fails} test"
-  else "$pm" test ${flag:+-- "$flag"} >"${state}.test.log" 2>&1 || fails="${fails} test"; fi
+  # Only npm needs `--` to pass args to the script (it strips one). pnpm and
+  # yarn forward them as-is, so a `--` reaches the script literally: jest then
+  # reads `--passWithNoTests` as a test-path PATTERN, matches nothing and
+  # exits 1, failing a green suite. Turbo scripts already end in `--`.
+  if [ "$pm" = npm ]; then npm test ${flag:+-- "$flag"} >"${state}.test.log" 2>&1 || fails="${fails} test"
+  else "$pm" test ${flag:+"$flag"} >"${state}.test.log" 2>&1 || fails="${fails} test"; fi
 fi
 if [ -z "$fails" ]; then
   echo "$tree" >"${state}.pass"
