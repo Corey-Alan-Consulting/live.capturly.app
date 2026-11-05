@@ -53,8 +53,10 @@ if has_script test; then
   # yarn forward them as-is, so a `--` reaches the script literally: jest then
   # reads `--passWithNoTests` as a test-path PATTERN, matches nothing and
   # exits 1, failing a green suite. Turbo scripts already end in `--`.
+  # `run test`, not `test`: pnpm 9 parses flags after its built-in `test`
+  # command itself and rejects --passWithNoTests as an unknown option.
   if [ "$pm" = npm ]; then npm test ${flag:+-- "$flag"} >"${state}.test.log" 2>&1 || fails="${fails} test"
-  else "$pm" test ${flag:+"$flag"} >"${state}.test.log" 2>&1 || fails="${fails} test"; fi
+  else "$pm" run test ${flag:+"$flag"} >"${state}.test.log" 2>&1 || fails="${fails} test"; fi
 fi
 if [ -z "$fails" ]; then
   echo "$tree" >"${state}.pass"
