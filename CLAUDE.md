@@ -7,7 +7,6 @@ the complete corresponding source of the deployed instance is this repository.
 
 <!-- SYNCED FROM framework/agents/base.md @ 656c115 — do not edit here; fix in framework and re-sync. -->
 
-
 # Corey Alan Consulting — org rules
 
 This repo belongs to Corey Alan Consulting and runs on the company platform (GKE prod + K3s staging, GitOps via ArgoCD). The authoritative engineering standards live in the `framework` repo (`Corey-Alan-Consulting/framework`, locally usually `../framework`); where this file and framework disagree, framework wins. Its `llms.txt` indexes every page.
